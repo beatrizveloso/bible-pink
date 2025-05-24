@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bible Pink</title>
+  <link rel="icon" href="src/images/book-icon.png">
+  <style>
+    :root {
+      --rosa-claro: #FFF5F7;
+      --rosa-medio: #F8C8DC;
+      --rosa-escuro: #EFA289;
+      --marrom-claro: #854429;
+      --marrom-escuro: #5A2C1D;
+      --sombra: 0 4px 20px rgba(133, 68, 41, 0.1);
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--rosa-claro);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+      margin: 0;
+      color: var(--marrom-escuro);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    h1 {
+      color: var(--rosa-escuro);
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: 300;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+    }
+
+    .search-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      width: 100%;
+    }
+
+    .input-group {
+      display: flex;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    input {
+      padding: 1rem;
+      font-size: 1.1rem;
+      border: 2px solid var(--rosa-medio);
+      border-radius: 30px 0 0 30px;
+      width: 100%;
+      outline: none;
+      color: var(--marrom-escuro);
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: var(--rosa-escuro);
+      box-shadow: 0 0 0 3px rgba(239, 162, 137, 0.3);
+    }
+
+    input::placeholder {
+      color: #c4a6a6;
+    }
+
+    button {
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      background-color: var(--rosa-escuro);
+      color: white;
+      border: none;
+      border-radius: 0 30px 30px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    button:hover {
+      background-color: var(--marrom-claro);
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #resultado {
+      margin-top: 2rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      width: 100%;
+      box-shadow: var(--sombra);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #resultado::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--rosa-escuro), var(--rosa-medio));
+    }
+
+    #resultado h3 {
+      color: var(--marrom-claro);
+      margin-top: 0;
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--rosa-medio);
+      padding-bottom: 0.5rem;
+    }
+
+    #resultado p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    .error {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid #d32f2f;
+    }
+
+    .example {
+      font-size: 0.9rem;
+      color: var(--rosa-escuro);
+      margin-top: 0.5rem;
+    }
+
+    .logo {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--rosa-escuro);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #FFE0F1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #EFA289;
+      border-radius: 10px;
+      border: 2px solid #FFE0F1;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .input-group {
+        flex-direction: column;
+      }
+
+      .input-group {
+        flex-direction: column;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      input {
+        width: 90%;
+        max-width: 400px;
+        border-radius: 30px;
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+        padding: 0.8rem;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        margin-top: 30px;
+      }
+
+      button {
+        width: 90%;
+        max-width: 400px;
+        border-radius: 30px;
+        font-size: 1.2rem;
+        padding: 0.8rem 0;
+      }
+
+      #resultado h3 {
+        font-size: 1.3rem;
+      }
+
+      #resultado p {
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .example {
+        font-size: 1.1rem;
+      }
+
+      #resultado {
+        width: 95%;
+        max-width: 400px;
+        padding: 1rem;
+        box-sizing: border-box;
+        margin: 0 auto;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo">✝</div>
+    <a href="index.html">
+      <h1>Bible Pink</h1>
+    </a>
+
+    <div class="search-box">
+      <div class="input-group">
+        <input type="text" id="referencia" placeholder="Digite a referência bíblica" />
+        <button onclick="buscarVersiculo()">Buscar</button>
+      </div>
+      <div class="example">Exemplo: João 3:16 ou Salmos 23:1</div>
+    </div>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    const livroMap = {
+      "genesis": "gn",
+      "exodo": "ex",
+      "levitico": "lv",
+      "numeros": "nm",
+      "deuteronomio": "dt",
+      "josue": "js",
+      "juizes": "jz",
+      "rute": "rt",
+      "1 samuel": "1sm",
+      "2 samuel": "2sm",
+      "1 reis": "1rs",
+      "2 reis": "2rs",
+      "1 cronicas": "1cr",
+      "2 cronicas": "2cr",
+      "esdras": "ed",
+      "neemias": "ne",
+      "ester": "et",
+      "jo": "job",
+      "salmos": "sl",
+      "proverbios": "pv",
+      "eclesiastes": "ec",
+      "cantares": "ct",
+      "isaias": "is",
+      "jeremias": "jr",
+      "lamentacoes": "lm",
+      "ezequiel": "ez",
+      "daniel": "dn",
+      "oseias": "os",
+      "joel": "jl",
+      "amos": "am",
+      "obadias": "ob",
+      "jonas": "jn",
+      "miqueias": "mq",
+      "naum": "na",
+      "habacuque": "hc",
+      "sofonias": "sf",
+      "ageu": "ag",
+      "zacarias": "zc",
+      "malaquias": "ml",
+      "mateus": "mt",
+      "marcos": "mc",
+      "lucas": "lc",
+      "joao": "jo",
+      "atos": "at",
+      "romanos": "rm",
+      "1 corintios": "1co",
+      "2 corintios": "2co",
+      "galatas": "gl",
+      "efesios": "ef",
+      "filipenses": "fp",
+      "colossenses": "cl",
+      "1 tessalonicenses": "1ts",
+      "2 tessalonicenses": "2ts",
+      "1 timoteo": "1tm",
+      "2 timoteo": "2tm",
+      "tito": "tt",
+      "filemom": "fm",
+      "hebreus": "hb",
+      "tiago": "tg",
+      "1 pedro": "1pe",
+      "2 pedro": "2pe",
+      "1 joao": "1jo",
+      "2 joao": "2jo",
+      "3 joao": "3jo",
+      "judas": "jd",
+      "apocalipse": "ap"
+    };
+
+    function removerAcentos(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    async function buscarVersiculo() {
+      const ref = document.getElementById("referencia").value.trim();
+      const resultado = document.getElementById("resultado");
+
+      if (!ref) {
+        resultado.innerHTML = '<div class="error">Por favor, digite uma referência bíblica.</div>';
+        return;
+      }
+
+      const partes = ref.split(/[\s:]+/);
+      if (partes.length < 3) {
+        resultado.innerHTML = '<div class="error">Formato inválido. Use: NomeDoLivro capítulo:versículo<br>Exemplo: João 3:16</div>';
+        return;
+      }
+
+      const nomeLivroOriginal = partes.slice(0, partes.length - 2).join(" ");
+      const nomeLivro = removerAcentos(nomeLivroOriginal.toLowerCase());
+      const capitulo = partes[partes.length - 2];
+      const versiculo = partes[partes.length - 1];
+
+      const sigla = livroMap[nomeLivro];
+
+      if (!sigla) {
+        resultado.innerHTML = '<div class="error">Livro não encontrado. Verifique se o nome está correto.</div>';
+        return;
+      }
+
+      try {
+        resultado.innerHTML = '<p style="text-align:center;color:var(--rosa-escuro)">Buscando versículo...</p>';
+
+        const response = await fetch(`https://www.abibliadigital.com.br/api/verses/nvi/${sigla}/${capitulo}/${versiculo}`, {
+          headers: {
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdHIiOiJTYXQgTWF5IDI0IDIwMjUgMDQ6MDQ6MDggR01UKzAwMDAuYmVhdHJpem9zbG92NkBnbWFpbC5jb20iLCJpYXQiOjE3NDgwNTk0NDh9.a0YhoRAU-eS3i0oTazXavOHT7r8Xj5dgAq1j6dWdbXk"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error("Versículo não encontrado. Verifique a referência.");
+        }
+
+        const data = await response.json();
+
+        resultado.innerHTML = `
+          <h3>${data.book.name} ${data.chapter}:${data.number}</h3>
+          <p>"${data.text}"</p>
+          <div style="margin-top:1.5rem;text-align:right;color:var(--rosa-escuro);font-style:italic;">${data.book.name} ${data.chapter}:${data.number} (NVI)</div>
+        `;
+      } catch (err) {
+        resultado.innerHTML = `<div class="error">${err.message}</div>`;
+      }
+    }
+
+    document.getElementById("referencia").addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        buscarVersiculo();
+      }
+    });
+  </script>
+</body>
+
+</html>

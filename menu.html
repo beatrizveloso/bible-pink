@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Bible Pink</title>
+    <link rel="icon" href="src/images/book-icon.png">
+    <style>
+        :root {
+            --rosa-claro: #FFF5F7;
+            --rosa-medio: #f8d7c8;
+            --rosa-escuro: #EFA289;
+            --marrom-claro: #854429;
+            --marrom-escuro: #5A2C1D;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--rosa-claro);
+            color: var(--marrom-escuro);
+            padding: 20px;
+        }
+        
+        h1 {
+            color: var(--rosa-escuro);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .books-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .book {
+            background-color: rgba(239, 162, 137, 0.15);
+            border: 1px solid var(--rosa-medio);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(133, 68, 41, 0.05);
+        }
+        
+        .book:hover {
+            background-color: rgba(239, 162, 137, 0.25);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(133, 68, 41, 0.1);
+        }
+        
+        .book-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--marrom-escuro);
+            font-size: 18px;
+            text-align: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--rosa-medio);
+        }
+        
+        .chapters-container {
+            display: none; 
+            margin-top: 10px;
+        }
+        
+        .chapter {
+            background-color: rgba(255, 247, 247, 0.8);
+            border: 1px solid var(--rosa-medio);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .chapter:hover {
+            background-color: var(--rosa-medio);
+            color: var(--marrom-escuro);
+        }
+        
+        .chapter-title {
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .verses-container {
+            display: none; 
+            margin-top: 8px;
+            padding-left: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .verse {
+            display: inline-block;
+            background-color: rgb(255, 245, 245);
+            border: 1px solid var(--rosa-claro);
+            border-radius: 4px;
+            padding: 4px 8px;
+            margin: 3px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .verse:hover {
+            background-color: var(--rosa-escuro);
+            background-color: rgb(230, 181, 159);
+        }
+        
+        .toggle-chapters {
+            cursor: pointer;
+            color: var(--rosa-escuro);
+            font-size: 14px;
+            margin-left: 5px;
+        }
+        
+        .testament-title {
+            grid-column: 1 / -1;
+            color: var(--marrom-claro);
+            font-size: 20px;
+            margin: 30px 0 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--rosa-medio);
+        }
+        
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FFE0F1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #EFA289;
+            border-radius: 10px;
+            border: 2px solid #FFE0F1;
+        }
+
+        @media (max-width: 600px) {
+            .books-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .verse {
+                padding: 3px 6px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Bible Pink</h1>
+    
+    <div class="books-container">
+        <div class="testament-title">Antigo Testamento</div>
+        
+        <div class="book" data-book="genesis">
+            <div class="book-title">Gênesis</div>
+            <div class="toggle-chapters" onclick="toggleChapters('genesis')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="genesis-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="exodo">
+            <div class="book-title">Êxodo</div>
+            <div class="toggle-chapters" onclick="toggleChapters('exodo')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="exodo-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="levitico">
+            <div class="book-title">Levítico</div>
+            <div class="toggle-chapters" onclick="toggleChapters('levitico')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="levitico-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="numeros">
+            <div class="book-title">Números</div>
+            <div class="toggle-chapters" onclick="toggleChapters('numeros')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="numeros-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="deuteronomio">
+            <div class="book-title">Deuteronômio</div>
+            <div class="toggle-chapters" onclick="toggleChapters('deuteronomio')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="deuteronomio-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="josue">
+            <div class="book-title">Josué</div>
+            <div class="toggle-chapters" onclick="toggleChapters('josue')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="josue-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="juizes">
+            <div class="book-title">Juízes</div>
+            <div class="toggle-chapters" onclick="toggleChapters('juizes')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="juizes-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="rute">
+            <div class="book-title">Rute</div>
+            <div class="toggle-chapters" onclick="toggleChapters('rute')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="rute-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="1samuel">
+            <div class="book-title">1 Samuel</div>
+            <div class="toggle-chapters" onclick="toggleChapters('1samuel')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="1samuel-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="2samuel">
+            <div class="book-title">2 Samuel</div>
+            <div class="toggle-chapters" onclick="toggleChapters('2samuel')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="2samuel-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="1reis">
+            <div class="book-title">1 Reis</div>
+            <div class="toggle-chapters" onclick="toggleChapters('1reis')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="1reis-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="2reis">
+            <div class="book-title">2 Reis</div>
+            <div class="toggle-chapters" onclick="toggleChapters('2reis')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="2reis-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="1cronicas">
+            <div class="book-title">1 Crônicas</div>
+            <div class="toggle-chapters" onclick="toggleChapters('1cronicas')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="1cronicas-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="2cronicas">
+            <div class="book-title">2 Crônicas</div>
+            <div class="toggle-chapters" onclick="toggleChapters('2cronicas')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="2cronicas-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="esdras">
+            <div class="book-title">Esdras</div>
+            <div class="toggle-chapters" onclick="toggleChapters('esdras')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="esdras-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="neemias">
+            <div class="book-title">Neemias</div>
+            <div class="toggle-chapters" onclick="toggleChapters('neemias')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="neemias-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="ester">
+            <div class="book-title">Ester</div>
+            <div class="toggle-chapters" onclick="toggleChapters('ester')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="ester-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="jo">
+            <div class="book-title">Jó</div>
+            <div class="toggle-chapters" onclick="toggleChapters('jo')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="jo-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="salmos">
+            <div class="book-title">Salmos</div>
+            <div class="toggle-chapters" onclick="toggleChapters('salmos')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="salmos-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="proverbios">
+            <div class="book-title">Provérbios</div>
+            <div class="toggle-chapters" onclick="toggleChapters('proverbios')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="proverbios-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="eclesiastes">
+            <div class="book-title">Eclesiastes</div>
+            <div class="toggle-chapters" onclick="toggleChapters('eclesiastes')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="eclesiastes-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="canticos">
+            <div class="book-title">Cânticos</div>
+            <div class="toggle-chapters" onclick="toggleChapters('canticos')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="canticos-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="isaias">
+            <div class="book-title">Isaías</div>
+            <div class="toggle-chapters" onclick="toggleChapters('isaias')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="isaias-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="jeremias">
+            <div class="book-title">Jeremias</div>
+            <div class="toggle-chapters" onclick="toggleChapters('jeremias')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="jeremias-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="lamentacoes">
+            <div class="book-title">Lamentações</div>
+            <div class="toggle-chapters" onclick="toggleChapters('lamentacoes')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="lamentacoes-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="ezequiel">
+            <div class="book-title">Ezequiel</div>
+            <div class="toggle-chapters" onclick="toggleChapters('ezequiel')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="ezequiel-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="daniel">
+            <div class="book-title">Daniel</div>
+            <div class="toggle-chapters" onclick="toggleChapters('daniel')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="daniel-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="oseias">
+            <div class="book-title">Oséias</div>
+            <div class="toggle-chapters" onclick="toggleChapters('oseias')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="oseias-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="joel">
+            <div class="book-title">Joel</div>
+            <div class="toggle-chapters" onclick="toggleChapters('joel')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="joel-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="amos">
+            <div class="book-title">Amós</div>
+            <div class="toggle-chapters" onclick="toggleChapters('amos')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="amos-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="obadias">
+            <div class="book-title">Obadias</div>
+            <div class="toggle-chapters" onclick="toggleChapters('obadias')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="obadias-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="jonas">
+            <div class="book-title">Jonas</div>
+            <div class="toggle-chapters" onclick="toggleChapters('jonas')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="jonas-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="miqueias">
+            <div class="book-title">Miqueias</div>
+            <div class="toggle-chapters" onclick="toggleChapters('miqueias')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="miqueias-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="naum">
+            <div class="book-title">Naum</div>
+            <div class="toggle-chapters" onclick="toggleChapters('naum')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="naum-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="habacuque">
+            <div class="book-title">Habacuque</div>
+            <div class="toggle-chapters" onclick="toggleChapters('habacuque')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="habacuque-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="sofonias">
+            <div class="book-title">Sofonias</div>
+            <div class="toggle-chapters" onclick="toggleChapters('sofonias')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="sofonias-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="ageu">
+            <div class="book-title">Ageu</div>
+            <div class="toggle-chapters" onclick="toggleChapters('ageu')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="ageu-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="zacarias">
+            <div class="book-title">Zacarias</div>
+            <div class="toggle-chapters" onclick="toggleChapters('zacarias')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="zacarias-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="malaquias">
+            <div class="book-title">Malaquias</div>
+            <div class="toggle-chapters" onclick="toggleChapters('malaquias')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="malaquias-chapters"></div>
+        </div>
+        
+        <div class="testament-title">Novo Testamento</div>
+        
+        <div class="book" data-book="mateus">
+            <div class="book-title">Mateus</div>
+            <div class="toggle-chapters" onclick="toggleChapters('mateus')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="mateus-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="marcos">
+            <div class="book-title">Marcos</div>
+            <div class="toggle-chapters" onclick="toggleChapters('marcos')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="marcos-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="lucas">
+            <div class="book-title">Lucas</div>
+            <div class="toggle-chapters" onclick="toggleChapters('lucas')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="lucas-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="joao">
+            <div class="book-title">João</div>
+            <div class="toggle-chapters" onclick="toggleChapters('joao')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="joao-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="atos">
+            <div class="book-title">Atos</div>
+            <div class="toggle-chapters" onclick="toggleChapters('atos')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="atos-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="romanos">
+            <div class="book-title">Romanos</div>
+            <div class="toggle-chapters" onclick="toggleChapters('romanos')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="romanos-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="1corintios">
+            <div class="book-title">1 Coríntios</div>
+            <div class="toggle-chapters" onclick="toggleChapters('1corintios')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="1corintios-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="2corintios">
+            <div class="book-title">2 Coríntios</div>
+            <div class="toggle-chapters" onclick="toggleChapters('2corintios')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="2corintios-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="galatas">
+            <div class="book-title">Gálatas</div>
+            <div class="toggle-chapters" onclick="toggleChapters('galatas')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="galatas-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="efesios">
+            <div class="book-title">Efésios</div>
+            <div class="toggle-chapters" onclick="toggleChapters('efesios')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="efesios-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="filipenses">
+            <div class="book-title">Filipenses</div>
+            <div class="toggle-chapters" onclick="toggleChapters('filipenses')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="filipenses-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="colossenses">
+            <div class="book-title">Colossenses</div>
+            <div class="toggle-chapters" onclick="toggleChapters('colossenses')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="colossenses-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="1tessalonicenses">
+            <div class="book-title">1 Tessalonicenses</div>
+            <div class="toggle-chapters" onclick="toggleChapters('1tessalonicenses')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="1tessalonicenses-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="2tessalonicenses">
+            <div class="book-title">2 Tessalonicenses</div>
+            <div class="toggle-chapters" onclick="toggleChapters('2tessalonicenses')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="2tessalonicenses-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="1timoteo">
+            <div class="book-title">1 Timóteo</div>
+            <div class="toggle-chapters" onclick="toggleChapters('1timoteo')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="1timoteo-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="2timoteo">
+            <div class="book-title">2 Timóteo</div>
+            <div class="toggle-chapters" onclick="toggleChapters('2timoteo')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="2timoteo-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="tito">
+            <div class="book-title">Tito</div>
+            <div class="toggle-chapters" onclick="toggleChapters('tito')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="tito-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="filemon">
+            <div class="book-title">Filemom</div>
+            <div class="toggle-chapters" onclick="toggleChapters('filemon')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="filemon-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="hebreus">
+            <div class="book-title">Hebreus</div>
+            <div class="toggle-chapters" onclick="toggleChapters('hebreus')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="hebreus-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="tiago">
+            <div class="book-title">Tiago</div>
+            <div class="toggle-chapters" onclick="toggleChapters('tiago')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="tiago-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="1pedro">
+            <div class="book-title">1 Pedro</div>
+            <div class="toggle-chapters" onclick="toggleChapters('1pedro')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="1pedro-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="2pedro">
+            <div class="book-title">2 Pedro</div>
+            <div class="toggle-chapters" onclick="toggleChapters('2pedro')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="2pedro-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="1joao">
+            <div class="book-title">1 João</div>
+            <div class="toggle-chapters" onclick="toggleChapters('1joao')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="1joao-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="2joao">
+            <div class="book-title">2 João</div>
+            <div class="toggle-chapters" onclick="toggleChapters('2joao')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="2joao-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="3joao">
+            <div class="book-title">3 João</div>
+            <div class="toggle-chapters" onclick="toggleChapters('3joao')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="3joao-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="judas">
+            <div class="book-title">Judas</div>
+            <div class="toggle-chapters" onclick="toggleChapters('judas')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="judas-chapters"></div>
+        </div>
+        
+        <div class="book" data-book="apocalipse">
+            <div class="book-title">Apocalipse</div>
+            <div class="toggle-chapters" onclick="toggleChapters('apocalipse')">▼ Mostrar capítulos</div>
+            <div class="chapters-container" id="apocalipse-chapters"></div>
+        </div>
+    </div>
+    
+    <script>
+        const booksData = {
+            "genesis": 50,
+            "exodo": 40,
+            "levitico": 27,
+            "numeros": 36,
+            "deuteronomio": 34,
+            "josue": 24,
+            "juizes": 21,
+            "rute": 4,
+            "1samuel": 31,
+            "2samuel": 24,
+            "1reis": 22,
+            "2reis": 25,
+            "1cronicas": 29,
+            "2cronicas": 36,
+            "esdras": 10,
+            "neemias": 13,
+            "ester": 10,
+            "jo": 42,
+            "salmos": 150,
+            "proverbios": 31,
+            "eclesiastes": 12,
+            "canticos": 8,
+            "isaias": 66,
+            "jeremias": 52,
+            "lamentacoes": 5,
+            "ezequiel": 48,
+            "daniel": 12,
+            "oseias": 14,
+            "joel": 3,
+            "amos": 9,
+            "obadias": 1,
+            "jonas": 4,
+            "miqueias": 7,
+            "naum": 3,
+            "habacuque": 3,
+            "sofonias": 3,
+            "ageu": 2,
+            "zacarias": 14,
+            "malaquias": 4,
+            
+            "mateus": 28,
+            "marcos": 16,
+            "lucas": 24,
+            "joao": 21,
+            "atos": 28,
+            "romanos": 16,
+            "1corintios": 16,
+            "2corintios": 13,
+            "galatas": 6,
+            "efesios": 6,
+            "filipenses": 4,
+            "colossenses": 4,
+            "1tessalonicenses": 5,
+            "2tessalonicenses": 3,
+            "1timoteo": 6,
+            "2timoteo": 4,
+            "tito": 3,
+            "filemon": 1,
+            "hebreus": 13,
+            "tiago": 5,
+            "1pedro": 5,
+            "2pedro": 3,
+            "1joao": 5,
+            "2joao": 1,
+            "3joao": 1,
+            "judas": 1,
+            "apocalipse": 22
+        };
+
+        function generateChaptersAndVerses() {
+            for (const [bookId, chapterCount] of Object.entries(booksData)) {
+                const chaptersContainer = document.getElementById(`${bookId}-chapters`);
+                
+                for (let chapter = 1; chapter <= chapterCount; chapter++) {
+                    const chapterDiv = document.createElement('div');
+                    chapterDiv.className = 'chapter';
+                    chapterDiv.setAttribute('data-chapter', chapter);
+                    
+                    const chapterTitle = document.createElement('div');
+                    chapterTitle.className = 'chapter-title';
+                    chapterTitle.innerHTML = `Capítulo ${chapter} <span class="toggle-chapters">▼</span>`;
+                    chapterTitle.onclick = function() { toggleVerses(bookId, chapter); };
+                    
+                    const versesContainer = document.createElement('div');
+                    versesContainer.className = 'verses-container';
+                    versesContainer.id = `${bookId}-${chapter}-verses`;
+                    
+                     for (let verse = 1; verse <= 30; verse++) {
+                        const verseDiv = document.createElement('div');
+                        verseDiv.className = 'verse';
+                        verseDiv.textContent = verse;
+                        verseDiv.onclick = function() { goToVerse(bookId, chapter, verse); };
+                        versesContainer.appendChild(verseDiv);
+                    }
+                    
+                    chapterDiv.appendChild(chapterTitle);
+                    chapterDiv.appendChild(versesContainer);
+                    chaptersContainer.appendChild(chapterDiv);
+                }
+            }
+        }
+
+        window.onload = generateChaptersAndVerses;
+        
+        function toggleChapters(bookId) {
+            const container = document.getElementById(`${bookId}-chapters`);
+            const toggle = event.target;
+            
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+                toggle.textContent = '▼ Mostrar capítulos';
+            } else {
+                container.style.display = 'block';
+                toggle.textContent = '▲ Esconder capítulos';
+            }
+        }
+        
+        function toggleVerses(bookId, chapter) {
+            const container = document.getElementById(`${bookId}-${chapter}-verses`);
+            const toggle = event.currentTarget.querySelector('.toggle-chapters');
+            
+            if (container.style.display === 'flex') {
+                container.style.display = 'none';
+                toggle.textContent = '▼';
+            } else {
+                container.style.display = 'flex';
+                toggle.textContent = '▲';
+            }
+        }
+        
+function goToVerse(bookId, chapter, verse) {
+    localStorage.setItem('currentBook', bookId);
+    localStorage.setItem('currentChapter', chapter);
+    localStorage.setItem('currentVerse', verse);
+    
+    window.location.href = 'leitura.html';
+}
+    </script>
+</body>
+</html>

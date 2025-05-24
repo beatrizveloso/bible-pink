@@ -1,0 +1,226 @@
+ :root {
+      --rosa-claro: #FFF5F7;
+      --rosa-medio: #F8C8DC;
+      --rosa-escuro: #EFA289;
+      --marrom-claro: #854429;
+      --marrom-escuro: #5A2C1D;
+      --sombra: 0 4px 20px rgba(133, 68, 41, 0.1);
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--rosa-claro);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+      margin: 0;
+      color: var(--marrom-escuro);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    h1 {
+      color: var(--rosa-escuro);
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: 300;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+    }
+
+    .search-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      width: 100%;
+    }
+
+    .input-group {
+      display: flex;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    input {
+      padding: 1rem;
+      font-size: 1.1rem;
+      border: 2px solid var(--rosa-medio);
+      border-radius: 30px 0 0 30px;
+      width: 100%;
+      outline: none;
+      color: var(--marrom-escuro);
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: var(--rosa-escuro);
+      box-shadow: 0 0 0 3px rgba(239, 162, 137, 0.3);
+    }
+
+    input::placeholder {
+      color: #c4a6a6;
+    }
+
+    button {
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      background-color: var(--rosa-escuro);
+      color: white;
+      border: none;
+      border-radius: 0 30px 30px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    button:hover {
+      background-color: var(--marrom-claro);
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #resultado {
+      margin-top: 2rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      width: 100%;
+      box-shadow: var(--sombra);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #resultado::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--rosa-escuro), var(--rosa-medio));
+    }
+
+    #resultado h3 {
+      color: var(--marrom-claro);
+      margin-top: 0;
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--rosa-medio);
+      padding-bottom: 0.5rem;
+    }
+
+    #resultado p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    .error {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid #d32f2f;
+    }
+
+    .example {
+      font-size: 0.9rem;
+      color: var(--rosa-escuro);
+      margin-top: 0.5rem;
+    }
+
+    .logo {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--rosa-escuro);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #FFE0F1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #EFA289;
+      border-radius: 10px;
+      border: 2px solid #FFE0F1;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .input-group {
+        flex-direction: column;
+      }
+
+      .input-group {
+        flex-direction: column;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      input {
+        width: 90%;
+        max-width: 400px;
+        border-radius: 30px;
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+        padding: 0.8rem;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        margin-top: 30px;
+      }
+
+      button {
+        width: 90%;
+        max-width: 400px;
+        border-radius: 30px;
+        font-size: 1.2rem;
+        padding: 0.8rem 0;
+      }
+
+      #resultado h3 {
+        font-size: 1.3rem;
+      }
+
+      #resultado p {
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .example {
+        font-size: 1.1rem;
+      }
+
+      #resultado {
+        width: 95%;
+        max-width: 400px;
+        padding: 1rem;
+        box-sizing: border-box;
+        margin: 0 auto;
+        padding: 1rem;
+      }
+    }
